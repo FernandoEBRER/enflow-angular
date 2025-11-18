@@ -1,0 +1,85 @@
+<div class="rounded-2xl bg-white shadow-sm border border-slate-200">
+  <div class="px-6 py-4 border-b">
+    <h2 class="text-sm font-semibold text-slate-700">
+      Monitoramento
+    </h2>
+  </div>
+
+  <!-- debugzinho pra garantir que os dados chegaram -->
+  <div class="px-6 pb-2 text-xs text-slate-500">
+    Total de registros: {{ medicoes.length }}
+    <br />
+    Primeiro registro: {{ medicoes[0] | json }}
+  </div>
+
+  <div class="px-6 pb-4">
+    <!-- estado de carregamento -->
+    <div *ngIf="carregando" class="py-4 text-sm text-slate-500">
+      Carregando dados...
+    </div>
+
+    <!-- estado de erro -->
+    <div *ngIf="erro" class="py-4 text-sm text-rose-600">
+      {{ erro }}
+    </div>
+
+    <!-- tabela só depende de medicoes.length -->
+    <div class="overflow-x-auto" *ngIf="medicoes.length > 0">
+      <table class="min-w-full text-sm">
+        <thead>
+          <tr class="text-left text-slate-500 border-b">
+            <th class="py-3 pr-4">Data/Hora</th>
+            <th class="py-3 pr-4">ID</th>
+            <th class="py-3 pr-4">Descrição</th>
+            <th class="py-3 pr-4">Corrente (A)</th>
+            <th class="py-3 pr-4">Tensão (V)</th>
+            <th class="py-3 pr-4">Potência (W)</th>
+            <th class="py-3 pr-4">Energia (Wh)</th>
+            <th class="py-3 pr-4">Frequência (Hz)</th>
+            <th class="py-3 pr-4">Fator Potência</th>
+            <th class="py-3 pr-4">Energia Reativa (VArh)</th>
+            <th class="py-3 pr-4">Potência Reativa (Var)</th>
+            <th class="py-3 pr-4 text-right">Status</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-100">
+          <tr *ngFor="let m of medicoes" class="text-slate-700">
+            <td class="py-3 pr-4 whitespace-nowrap">
+              {{ m.data_hora | date:'dd/MM/yy HH:mm' }}
+            </td>
+            <td class="py-3 pr-4">{{ m.id }}</td>
+            <td class="py-3 pr-4">{{ m.descricao }}</td>
+            <td class="py-3 pr-4">{{ m.corrente }}</td>
+            <td class="py-3 pr-4 whitespace-nowrap">{{ m.tensao }}</td>
+            <td class="py-3 pr-4 whitespace-nowrap">{{ m.potencia }}</td>
+            <td class="py-3 pr-4">{{ m.energia }}</td>
+            <td class="py-3 pr-4">{{ m.frequencia }}</td>
+            <td class="py-3 pr-4">{{ m.fatorPotencia }}</td>
+            <td class="py-3 pr-4">{{ m.energiaReativa }}</td>
+            <td class="py-3 pr-4">{{ m.potenciaReativa }}</td>
+            <td class="py-3 pl-4 text-right">
+              <span
+                [ngClass]="{
+                  'bg-purple-100 text-purple-700': m.status === 'Action Required',
+                  'bg-sky-100 text-sky-700': m.status === 'Pending',
+                  'bg-emerald-100 text-emerald-700': m.status === 'Delivered'
+                }"
+                class="inline-flex items-center rounded-full px-3 py-1 text-xs font-medium">
+                {{ m.status || '—' }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- mensagem quando terminou de carregar e veio vazio -->
+    <div
+      *ngIf="!carregando && !erro && medicoes.length === 0"
+      class="py-4 text-sm text-slate-500"
+    >
+      Nenhum registro para exibir.
+    </div>
+  </div>
+</div>

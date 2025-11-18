@@ -1,0 +1,238 @@
+<!-- Fundo da página -->
+<div class="min-h-screen w-full bg-slate-100">
+  <!-- Container central -->
+  <div class="mx-auto max-w-7xl px-2 py-4">
+
+    <!-- Caixa branca -->
+    <div class="rounded-2xl bg-white shadow-sm border border-slate-200">
+
+        <!-- CABEÇALHO -->
+        <div class="px-6 py-4 space-y-4">
+
+        <!-- LINHA 1 — Título + menus (esquerda) / botões (direita) -->
+        <div class="flex flex-wrap items-center justify-between gap-3">
+
+            <!-- ESQUERDA -->
+            <div class="flex flex-wrap items-center gap-3">
+            <h1 class="text-lg font-semibold text-slate-800 uppercase tracking-wide">
+                Relatórios
+            </h1>
+
+            <!-- MENU PRINCIPAL (TODOS BOTÕES) -->
+            <div class="flex flex-wrap gap-2 text-xs">
+                <button (click)="setMenu('Monitoramento')"
+                    [ngClass]="selectedMenu === 'Monitoramento'
+                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                    class="rounded-lg px-3 py-1 text-xs transition-colors border border-slate-200">
+                    Monitoramento
+                </button>
+                <button (click)="setMenu('Gestão')"
+                    [ngClass]="selectedMenu === 'Gestão'
+                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                    class="rounded-lg px-3 py-1 text-xs transition-colors border border-slate-200">
+                    Gestão
+                </button>
+                <button (click)="setMenu('Custos')"
+                    [ngClass]="selectedMenu === 'Custos'
+                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                    class="rounded-lg px-3 py-1 text-xs transition-colors border border-slate-200">
+                    Custos
+                </button>
+                <button (click)="setMenu('Energia')"
+                    [ngClass]="selectedMenu === 'Energia'
+                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                    class="rounded-lg px-3 py-1 text-xs transition-colors border border-slate-200">
+                    Energia
+                </button>
+                <button (click)="setMenu('Métricas')"
+                    [ngClass]="selectedMenu === 'Métricas'
+                        ? 'border-blue-500 bg-blue-50 text-blue-600'
+                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                    class="rounded-lg px-3 py-1 text-xs transition-colors border border-slate-200">
+                    Métricas
+                </button>
+            </div>
+            </div>
+
+            <!-- DIREITA: Imprimir + Meus Filtros -->
+            <div class="flex flex-wrap gap-2 text-xs">
+            <button (click)="setMenu('Imprimir')"
+                [ngClass]="selectedMenu === 'Imprimir'
+                    ? 'border-blue-500 bg-blue-50 text-blue-600'
+                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                class="rounded-lg border border-slate-200 bg-white px-3 py-1 hover:bg-slate-100">
+                Imprimir
+            </button>
+            <button (click)="setMenu('Meus Filtros')"
+                [ngClass]="selectedMenu === 'Meus Filtros'
+                    ? 'border-blue-500 bg-blue-50 text-blue-600'
+                    : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+                class="rounded-lg border border-slate-200 bg-white px-3 py-1 hover:bg-slate-100">
+                Meus Filtros
+            </button>
+            </div>
+        </div>
+        
+        <!-- LINHA 2 — FILTROS -->
+        <div class="flex flex-wrap gap-2 text-xs border-b pb-3">
+
+        <!-- Últimos 12 meses -->
+        <button
+            (click)="setFiltro('12m')"
+            [ngClass]="filtroSelecionado === '12m'
+            ? 'border-blue-500 bg-blue-50 text-blue-600'
+            : 'border-slate-200 bg-white text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+            class="rounded-lg px-3 py-1 transition-colors">
+            Últimos 12 meses
+        </button>
+
+        <!-- Por mês + input de mês -->
+        <div class="flex items-center gap-2">
+            <button
+            (click)="setFiltro('mes')"
+            [ngClass]="filtroSelecionado === 'mes'
+                ? 'border-blue-500 bg-blue-50 text-blue-600'
+                : 'border-slate-200 bg-white text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+            class="rounded-lg px-3 py-1 transition-colors">
+            Por mês
+            </button>
+
+            <!-- Input aparece só quando filtro = 'mes' -->
+            <input
+            *ngIf="filtroSelecionado === 'mes'"
+            type="month"
+            [(ngModel)]="mesSelecionado"
+            (change)="onMesChange(mesSelecionado)"
+            class="rounded-lg border border-slate-300 px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500" />
+        </div>
+
+        <!-- Ativo/Local (só clica, lógica você implementa depois) -->
+        <button
+            (click)="setFiltro('ativo')"
+            [ngClass]="filtroSelecionado === 'ativo'
+            ? 'border-blue-500 bg-blue-50 text-blue-600'
+            : 'border-slate-200 bg-white text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+            class="rounded-lg px-3 py-1 transition-colors">
+            Ativo/Local
+        </button>
+
+        <!-- Criticidade -->
+        <button
+            (click)="setFiltro('criticidade')"
+            [ngClass]="filtroSelecionado === 'criticidade'
+            ? 'border-blue-500 bg-blue-50 text-blue-600'
+            : 'border-slate-200 bg-white text-slate-700 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600'"
+            class="rounded-lg px-3 py-1 transition-colors">
+            Criticidade
+        </button>
+        </div>
+
+
+        <!-- LINHA 3 — SUBTÍTULO -->
+        <div>
+            <h2 class="text-sm font-semibold text-slate-700">
+            Energia e Operação
+            </h2>
+        </div>
+        </div>
+
+
+        <!-- CORPO: cards + (depois) os gráficos -->
+        <div class="px-6 py-6 space-y-6" [ngSwitch]="selectedMenu">
+
+        <ng-container *ngSwitchCase="'Energia'">
+            <!-- LINHA DE CARDS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+
+                <!-- Consumo Total -->
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                <p class="text-xs font-medium text-slate-500">Consumo Total</p>
+                <p class="mt-2 text-2xl font-semibold text-slate-900">
+                    3.02 <span class="text-sm font-normal">GWh</span><span class="text-rose-600">▲</span>
+                </p>
+                <p class="mt-1 text-xs text-slate-500">
+                    12.91% de aumento no último ano
+                </p>
+                </div>
+
+                <!-- Custo Total -->
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                <p class="text-xs font-medium text-slate-500">Custo Total</p>
+                <p class="mt-2 text-2xl font-semibold text-slate-900">
+                    R$ 1.392.903,10 <span class="text-rose-600">▲</span>
+                </p>
+                <p class="mt-1 text-xs text-slate-500">
+                    15.74% de aumento no último ano 
+                </p>
+                </div>
+
+                <!-- Tempo em funcionamento (%) -->
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                <p class="text-xs font-medium text-slate-500">Tempo em funcionamento (%)</p>
+                <p class="mt-2 text-2xl font-semibold text-slate-900">
+                    84,71% <span class="text-emerald-600">▲</span>
+                </p>
+                <p class="mt-1 text-xs text-slate-500">
+                    6.7% de aumento no último ano 
+                </p>
+                </div>
+
+                <!-- Fator de Potência Médio -->
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                <p class="text-xs font-medium text-slate-500">Fator de Potência Médio</p>
+                <p class="mt-2 text-2xl font-semibold text-slate-900">
+                    83,9% <span class="text-emerald-600">▲</span>
+                </p>
+                <p class="mt-1 text-xs text-slate-500">
+                    2.56% de aumento no último ano 
+                </p>
+                </div>
+
+            </div>
+
+            <!-- ÁREA DOS GRÁFICOS (placeholder por enquanto) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                    <div class="mb-3 flex items-center gap-2">
+                        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-600 text-xs">
+                            R$
+                        </span>
+                        <p class="text-sm font-semibold text-slate-700">
+                            Consumo x Custo de Energia
+                        </p>
+                    </div>
+
+                    <app-consumo-custo-chart></app-consumo-custo-chart>
+                </div>
+
+
+                <div class="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
+                    <div class="mb-3 flex items-center gap-2">
+                        <!-- ícone de tomada (SVG simples) -->
+                        <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-600 text-xs">
+                            T
+                        </span>
+                        <p class="text-sm font-semibold text-slate-700">
+                            Fator de Potência Médio
+                        </p>
+                    </div>
+
+                    <app-fator-potencia-chart></app-fator-potencia-chart>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'Monitoramento'">
+            <app-monitoramento></app-monitoramento>
+        </ng-container>
+
+        
+        
+    </div>
+  </div>
+</div>
